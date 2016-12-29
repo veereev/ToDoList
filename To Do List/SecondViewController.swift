@@ -8,8 +8,39 @@
 
 import UIKit
 
-class SecondViewController: UIViewController {
+class SecondViewController: UIViewController, UITextFieldDelegate {
 
+    @IBOutlet var itemTextField: UITextField!
+    @IBAction func dismissKeyboard(_ sender: UITapGestureRecognizer)
+    {
+        itemTextField.resignFirstResponder()
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    @IBAction func add(_ sender: Any) {
+        
+        let itemsObject = UserDefaults.standard.object(forKey: "items")
+        
+        var items: [String]
+        
+        if let tempItems = itemsObject as? [String] {
+            
+            items = tempItems
+            if itemTextField.text! != ""{
+            items.append(itemTextField.text!)
+            }
+        }
+        else
+        {
+             items = [itemTextField.text!]
+        }
+        
+        UserDefaults.standard.set(items, forKey: "items")
+        itemTextField.text = ""
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
